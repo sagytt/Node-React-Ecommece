@@ -49,3 +49,8 @@ exports.signin = (req, res) => {
 
     });
 };
+
+exports.signout = (req, res)=>{
+    res.clearCookie('t');
+    res.json({message: "Signout success"});
+};
