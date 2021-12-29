@@ -5,8 +5,7 @@ const {v4: uuidv4} = require('uuid');
 const userSchema = new mongoose.Schema({
     name:{
         type: String,
-        //remove spaces
-        trim: true,
+        trim: true,   //remove spaces
         required: true,
         maxlength:32
     },
@@ -23,8 +22,7 @@ const userSchema = new mongoose.Schema({
     },
     about:{
         type: String,
-        //remove spaces
-        trim: true,
+        trim: true, //remove spaces
     },
     //salt to generate the hashed password
     salt:{
