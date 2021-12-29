@@ -4,7 +4,6 @@ const expressJwt = require('express-jwt'); //for authorization check
 const {errorHandler} = require('../helpers/dbErrorHandler');
 
 exports.signup = (req, res) => {
-    console.log('singnin')
     const user = new User(req.body);
     user.save((err, user) => {
         if (err) {
@@ -15,7 +14,6 @@ exports.signup = (req, res) => {
         //To remove the hashed password from response after signup was successful
         user.salt = undefined;
         user.hashed_password = undefined;
-
         res.json({
             user
         });
@@ -54,3 +52,9 @@ exports.signout = (req, res)=>{
     res.clearCookie('t');
     res.json({message: "Signout success"});
 };
+
+exports.requireSignin = expressJwt({
+    secret: process.env.JWT_SECRET,
+    algorithms: ['RS256'],
+    useProperty: "auth"
+});
