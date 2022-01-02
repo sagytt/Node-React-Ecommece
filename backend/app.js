@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 //Parse incoming request bodies in a middleware before your handlers
 const bodyParser = require('body-parser');
+//To handle requests from different origins
+const cors = require('cors');
 //middleware which parses cookies attached to the client request
 const cookieParser = require('cookie-parser');
 const expressValidator = require('express-validator');
@@ -34,6 +36,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(expressValidator());
+app.use(cors());
 
 
 //routes middleware
