@@ -5,9 +5,9 @@ const fs = require('fs');
 const {errorHandler} = require('../helpers/dbErrorHandler');
 
 //middleware
-exports.productById = (req, res, next, id)=>{
-    Product.findById(id).exec((err, product)=>{
-        if(err || !product){
+exports.productById = (req, res, next, id) => {
+    Product.findById(id).exec((err, product) => {
+        if (err || !product) {
             return res.status(400).json({
                 error: "Product not found"
             });
@@ -17,16 +17,16 @@ exports.productById = (req, res, next, id)=>{
     })
 };
 
-exports.read = (req, res)=>{
+exports.read = (req, res) => {
     //since photo has large size we will remove it from req.
     req.product.photo = undefined;
     return res.json(req.product);
 };
 
-exports.remove = (req, res)=>{
+exports.remove = (req, res) => {
     let product = req.product;
-    product.remove((err, deletedProduct)=>{
-        if(err){
+    product.remove((err, deletedProduct) => {
+        if (err) {
             return res.status(400).json({
                 error: errorHandler(err)
             });
@@ -47,7 +47,7 @@ exports.create = (req, res) => {
             });
         }
         // check for all fields
-        const { name, description, price, category, quantity, shipping } = fields;
+        const {name, description, price, category, quantity, shipping} = fields;
 
         if (!name || !description || !price || !category || !quantity || !shipping) {
             return res.status(400).json({
@@ -92,7 +92,7 @@ exports.update = (req, res) => {
             });
         }
         // check for all fields
-        const { name, description, price, category, quantity, shipping } = fields;
+        const {name, description, price, category, quantity, shipping} = fields;
 
         if (!name || !description || !price || !category || !quantity || !shipping) {
             return res.status(400).json({
@@ -126,4 +126,33 @@ exports.update = (req, res) => {
             res.json(result);
         });
     });
+};
+
+//***************
+// sell / arrival
+// by sell = /products?sortBy=sold&order=desc&limit=4
+// by arrival = /products?sortBy=created&order=desc&limit=4
+//***************
+
+//fetching products
+exports.list = (req, res) => {
+    let order = req.query.order ? req.query.order : 'asc';
+    let sortBy = req.query.sortBy ? req.query.sortBy : '_id';
+    let limit = req.query.limit ? parseInt(req.query.limit) : 6;
+
+    Product.find()
+        //"-photo" to not select the photo
+        .select("-photo")
+        //Will return the category from db
+        .populate('category')
+        .sort([[sortBy, order]])
+        .limit(limit)
+        .exec((err, products) => {
+            if (err) {
+                return res.status(400).json({
+                    error: 'Products not found'
+                });
+            }
+            res.send(products);
+        });
 };
