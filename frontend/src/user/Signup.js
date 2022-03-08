@@ -1,5 +1,9 @@
 import React from "react";
+import Layout from '../core/Layout'
+const Signup = () => (
+    <Layout title="Signup" description="Just signup page">
 
-const Signup = () => <h2>signup</h2>
+    </Layout>
+);
 
 export default Signup;

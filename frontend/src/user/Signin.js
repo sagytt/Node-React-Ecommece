@@ -1,5 +1,9 @@
 import React from "react";
+import Layout from '../core/Layout'
+const Signin = () => (
+  <Layout title="Signin" description="Just signin page">
 
-const Signin = () => <h2>signin</h2>
+  </Layout>
+);
 
 export default Signin;
