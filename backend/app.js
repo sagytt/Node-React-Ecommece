@@ -31,7 +31,6 @@ mongoose
     .then(() => console.log('DB Connected'));
 
 //middlewares
-// middlewares
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(cookieParser());
