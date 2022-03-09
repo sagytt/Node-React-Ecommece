@@ -1,6 +1,7 @@
 exports.userSignupValidator = (req, res, next) => {
     //check function belongs to express-validator which declared globally
     req.check('name', 'Name is required').notEmpty();
+
     req.check('email', 'Email must be between 3 too 32 characters')
         .matches(/.+\@.+\..+/)
         .withMessage('Email must contain @')
@@ -8,6 +9,7 @@ exports.userSignupValidator = (req, res, next) => {
             min: 4,
             max: 32
         });
+
     req.check('password', 'Password is required').notEmpty();
     req.check('password')
         .isLength({min: 6})

@@ -3,7 +3,11 @@ const jwt = require('jsonwebtoken'); //to generate signed token
 const expressJwt = require('express-jwt'); //for authorization check
 const {errorHandler} = require('../helpers/dbErrorHandler');
 
-exports.signup = (req, res) => {
+exports.signup = async (req, res) => {
+    const userExists = await User.findOne({email: req.body.email});
+    if (userExists) return res.status(403).json({
+        error: "Email is taken!"
+    });
     const user = new User(req.body);
     user.save((err, user) => {
         if (err) {
