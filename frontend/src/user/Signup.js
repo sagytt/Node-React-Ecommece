@@ -19,24 +19,22 @@ const Signup = () => {
         setValues({...values, error: false, [name]: event.target.value});
     }
 
-
-
-    const clickSubmit = (event) =>{
+    const clickSubmit = (event) => {
         event.preventDefault();
         signup({name, email, password})
-            .then(data =>{
-                if(data.error){
+            .then(data => {
+                if (data.error) {
                     setValues({...values, error: data.error, success: false})
-                }else{
+                } else {
                     setValues(
-                    {
-                        ...values,
-                        name: '',
-                        email: '',
-                        password: '',
-                        error: '',
-                        success: true
-                    })
+                        {
+                            ...values,
+                            name: '',
+                            email: '',
+                            password: '',
+                            error: '',
+                            success: true
+                        })
                 }
             });
     }
@@ -69,12 +67,12 @@ const Signup = () => {
     )
 
     const showError = () => (
-            <div className="alert alert-danger"
-                 style={{display: error ? '' : "none"}}>
-                {error}
-            </div>
-        )
-    const showSuccess = () =>(
+        <div className="alert alert-danger"
+             style={{display: error ? '' : "none"}}>
+            {error}
+        </div>
+    )
+    const showSuccess = () => (
         <div className="alert alert-info" style={{display: success ? '' : "none"}}>
             New account is created. Please <Link to='/signin'>Signin</Link>
         </div>
@@ -85,7 +83,6 @@ const Signup = () => {
             {showSuccess()}
             {showError()}
             {signUpForm()}
-            {JSON.stringify(values)}
         </Layout>
     )
 }
