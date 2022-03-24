@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import Layout from "./Layout";
 import Card from "./Card";
-import { getCategories, getFilteredProducts } from "./apiCore";
+import {getCategories, getFilteredProducts} from "./apiCore";
 import Checkbox from "./Checkbox";
 import RadioBox from "./RadioBox";
-import { prices } from "./fixedPrices";
+import {prices} from "./fixedPrices";
 
 const Shop = () => {
     const [myFilters, setMyFilters] = useState({
-        filters: { category: [], price: [] }
+        filters: {category: [], price: []}
     });
     const [categories, setCategories] = useState([]);
     const [error, setError] = useState(false);
@@ -72,7 +72,7 @@ const Shop = () => {
 
     const handleFilters = (filters, filterBy) => {
         // console.log("SHOP", filters, filterBy);
-        const newFilters = { ...myFilters };
+        const newFilters = {...myFilters};
         newFilters.filters[filterBy] = filters;
 
         if (filterBy === "price") {
@@ -128,10 +128,12 @@ const Shop = () => {
                     <h2 className="mb-4">Products</h2>
                     <div className="row">
                         {filteredResults.map((product, i) => (
-                            <Card key={i} product={product} />
+                            <div key={i} className="col-4 mb-3">
+                                <Card product={product}/>
+                            </div>
                         ))}
                     </div>
-                    <hr />
+                    <hr/>
                     {loadMoreButton()}
                 </div>
             </div>
