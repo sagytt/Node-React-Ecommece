@@ -5,38 +5,43 @@ import {getCart} from "./CartHelpers";
 import Card from "./Card";
 import Search from "./Search";
 
-const Cart = () =>{
+const Cart = () => {
     const [items, setItems] = useState([])
 
-    useEffect(() =>{
+    useEffect(() => {
         setItems(getCart())
-    }, [])
+    }, [items])
 
-    const showItems = items =>{
+    const showItems = items => {
         return (
             <div>
                 <h2>Your cart has {`${items.length}`} items</h2>
                 <hr/>
-                {items.map((product, i) => (<Card key={i} product={product} />))}
+                {items.map((product, i) =>
+                    (<Card key={i} product={product}
+                           showAddToCartButton={false}
+                            cartUpdate={true}
+                           showRemoveProductButton={true}
+                    />))}
             </div>
         )
     }
 
-    const noItemsMessagse = () =>(
+    const noItemsMessagse = () => (
         <h2> Your cart is empty. <br/><Link to="/shop">Continue shopping</Link></h2>
     )
 
     return (
         <Layout title="Shipping Cart" description="Manage you cart items" className="container-fluid">
 
-        <div className="row">
-            <div className="col-6">
-                {items.length > 0 ? showItems(items) : noItemsMessagse()}
+            <div className="row">
+                <div className="col-6">
+                    {items.length > 0 ? showItems(items) : noItemsMessagse()}
+                </div>
+                <div className="col-6">
+                    <p>shipping address/total/update quantity</p>
+                </div>
             </div>
-            <div className="col-6">
-                <p>shipping address/total/update quantity</p>
-            </div>
-        </div>
         </Layout>
     );
 }

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import ShowImage from './ShowImage';
 import moment from 'moment';
-import {addItem} from './CartHelpers';
+import {addItem, updateItem, removeItem} from './CartHelpers';
 
 const Card = ({
                   product,
@@ -58,9 +58,9 @@ const Card = ({
     const handleChange = productId => event => {
         setRun(!run); // run useEffect in parent Cart
         setCount(event.target.value < 1 ? 1 : event.target.value);
-        // if (event.target.value >= 1) {
-        //     updateItem(productId, event.target.value);
-        // }
+        if (event.target.value >= 1) {
+            updateItem(productId, event.target.value);
+        }
     };
 
     const showCartUpdateOptions = cartUpdate => {
@@ -77,23 +77,23 @@ const Card = ({
             )
         );
     };
-    // const showRemoveButton = showRemoveProductButton => {
-    //     return (
-    //         showRemoveProductButton && (
-    //             <button
-    //                 onClick={() => {
-    //                     removeItem(product._id);
-    //                     setRun(!run); // run useEffect in parent Cart
-    //                 }}
-    //                 className="btn btn-outline-danger mt-2 mb-2"
-    //             >
-    //                 Remove Product
-    //             </button>
-    //         )
-    //     );
-    // };
+    const showRemoveButton = showRemoveProductButton => {
+        return (
+            showRemoveProductButton && (
+                <button
+                    onClick={() => {
+                        removeItem(product._id);
+                        setRun(!run); // run useEffect in parent Cart
+                    }}
+                    className="btn btn-outline-danger mt-2 mb-2"
+                >
+                    Remove Product
+                </button>
+            )
+        );
+    };
     return (
-        <div className="card ">
+        <div className="card">
             <div className="card-header card-header-1 ">{product.name}</div>
             <div className="card-body">
                 {shouldRedirect(redirect)}
@@ -109,7 +109,7 @@ const Card = ({
 
                 {showAddToCartBtn(showAddToCartButton)}
 
-                {/*{showRemoveButton(showRemoveProductButton)}*/}
+                {showRemoveButton(showRemoveProductButton)}
 
                 {showCartUpdateOptions(cartUpdate)}
             </div>
