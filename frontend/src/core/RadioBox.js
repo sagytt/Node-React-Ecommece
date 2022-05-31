@@ -1,4 +1,4 @@
-import React, {useState, useEffect, Fragment} from "react";
+import React, {useState} from "react";
 
 const RadioBox = ({prices, handleFilters}) => {
     const [value, setValue] = useState(0);
@@ -15,5 +15,6 @@ const RadioBox = ({prices, handleFilters}) => {
         </div>
     ))
 }
+
 
 export default RadioBox;
