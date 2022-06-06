@@ -20,9 +20,9 @@ exports.read = (req, res) => {
 
 exports.update = (req, res) => {
     //find user by his id in request and set it what ever comes from the request body
-    const { name, password } = req.body;
+    const {name, password} = req.body;
 
-    User.findOne({ _id: req.profile._id }, (err, user) => {
+    User.findOne({_id: req.profile._id}, (err, user) => {
         if (err || !user) {
             return res.status(400).json({
                 error: 'User not found'
@@ -60,3 +60,29 @@ exports.update = (req, res) => {
     });
 };
 
+exports.addOrderToUserHistory = (req, res, next) => {
+    let history = [];
+    req.body.order.products.forEach((item) => {
+        history.push({
+            _id: item._id,
+            name: item.name,
+            description: item.description,
+            category: item.category,
+            quantity: item.quantity,
+            transaction_id: item.transaction_id,
+            amount: req.body.order.amount
+        })
+    })
+
+    User.findByIdAndUpdate({_id: req.profile._id},
+        {$push: {history: history}},
+        {new: true},
+        (error, data) => {
+        if(error){
+            return res.status(400).json({
+                error: 'Could not update user purchase history'
+            });
+        }
+        next();
+    })
+}
