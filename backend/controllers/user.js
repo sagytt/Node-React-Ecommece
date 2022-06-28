@@ -19,15 +19,16 @@ exports.read = (req, res) => {
 };
 
 exports.update = (req, res) => {
-    //find user by his id in request and set it what ever comes from the request body
-    const {name, password} = req.body;
-
-    User.findOne({_id: req.profile._id}, (err, user) => {
+    // console.log('UPDATE USER - req.user', req.user, 'UPDATE DATA', req.body);
+    const { name, password } = req.body;
+    console.log(req);
+    User.findOne({ _id: req.profile._id }, (err, user) => {
         if (err || !user) {
             return res.status(400).json({
                 error: 'User not found'
             });
         }
+
         if (!name) {
             return res.status(400).json({
                 error: 'Name is required'
