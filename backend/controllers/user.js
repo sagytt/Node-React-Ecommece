@@ -1,4 +1,6 @@
 const User = require('../models/user');
+const {errorHandler} = require('../helpers/dbErrorHandler');
+const Order = require("../models/order");
 
 exports.userById = (req, res, next, id) => {
     User.findById(id).exec((err, user) => {
@@ -20,9 +22,9 @@ exports.read = (req, res) => {
 
 exports.update = (req, res) => {
     // console.log('UPDATE USER - req.user', req.user, 'UPDATE DATA', req.body);
-    const { name, password } = req.body;
+    const {name, password} = req.body;
     console.log(req);
-    User.findOne({ _id: req.profile._id }, (err, user) => {
+    User.findOne({_id: req.profile._id}, (err, user) => {
         if (err || !user) {
             return res.status(400).json({
                 error: 'User not found'
@@ -79,11 +81,25 @@ exports.addOrderToUserHistory = (req, res, next) => {
         {$push: {history: history}},
         {new: true},
         (error, data) => {
-        if(error){
-            return res.status(400).json({
-                error: 'Could not update user purchase history'
-            });
-        }
-        next();
-    })
+            if (error) {
+                return res.status(400).json({
+                    error: 'Could not update user purchase history'
+                });
+            }
+            next();
+        })
 }
+
+exports.purchaseHistory = (req, res) => {
+    Order.find({user: req.profile._id})
+        .populate('user', '_id name')
+        .sort('-created')
+        .exec((err, orders) => {
+            if (err) {
+                return res.status(400).json({
+                    error: errorHandler(err)
+                });
+            }
+            res.json(orders);
+        });
+};
